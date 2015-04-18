@@ -367,7 +367,7 @@ struct JsonParser {
     char get_next_token() {
         consume_whitespace();
         if (i == str.size())
-            return fail("unexpected end of input", 0);
+            return fail("unexpected end of input", char{});
 
         return str[i++];
     }
@@ -435,7 +435,7 @@ struct JsonParser {
             if (ch == 'u') {
                 // Extract 4-byte escape sequence
                 string esc = str.substr(i, 4);
-                for (int j = 0; j < 4; j++) {
+                for (size_t j = 0; j < 4; ++j) {
                     if (!in_range(esc[j], 'a', 'f') && !in_range(esc[j], 'A', 'F')
                             && !in_range(esc[j], '0', '9'))
                         return fail("bad \\u escape: " + esc, "");
